@@ -2,7 +2,7 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { States } from '../enum/States.enum';
 
 @Entity()
-export class ExceptionEntitiy {
+export class ExceptionEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
