@@ -23,7 +23,7 @@ export class ExceptionsService {
       where: { ...exceptionQPs },
       relations: ['documentTypeIds']
     };
-    this.logger.debug('Query', { query })
+    this.logger.debug('Query', { query });
     return this.exceptionsRepository.find(query);
   }
 
