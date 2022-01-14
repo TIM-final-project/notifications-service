@@ -1,10 +1,12 @@
 import { Injectable, Logger } from '@nestjs/common';
+import { RpcException } from '@nestjs/microservices';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ExceptionCreateDTO } from '../dtos/exception-create.dto';
 import { ExceptionDTO } from '../dtos/exception.dto';
 import { ExceptionEntity } from '../entities/exception.entity';
 import { States } from '../enum/States.enum';
+import { ExceptionQPs } from '../qps/exception.qps';
 
 @Injectable()
 export class ExceptionsService {
@@ -15,12 +17,27 @@ export class ExceptionsService {
     private exceptionsRepository: Repository<ExceptionEntity>
   ) {}
 
-  async findAll(): Promise<ExceptionDTO[]> {
-    return this.exceptionsRepository.find();
+  async findAll(exceptionQPs: ExceptionQPs): Promise<ExceptionDTO[]> {
+    this.logger.debug('Getting Exception', { exceptionQPs });
+    const query = {
+      where: { ...exceptionQPs },
+      relations: ['documentTypeIds']
+    };
+    this.logger.debug('Query', { query })
+    return this.exceptionsRepository.find(query);
   }
 
   async create(exceptionDTO: ExceptionCreateDTO): Promise<ExceptionDTO> {
-    return this.exceptionsRepository.create(exceptionDTO);
+    try {
+      const exceptionEntity: ExceptionEntity = exceptionDTO;
+      this.logger.debug('Exception Entity ', exceptionEntity);
+      return this.exceptionsRepository.save(exceptionEntity);
+    } catch (error) {
+      this.logger.error('Error creating Exception', error);
+      throw new RpcException({
+        message: 'Ha ocurrido un error al pedir la excepcion.'
+      });
+    }
   }
 
   async update(id: number): Promise<ExceptionDTO> {

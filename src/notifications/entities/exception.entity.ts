@@ -1,10 +1,11 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { States } from '../enum/States.enum';
+import { DocumentTypeEntity } from './document-type.entity';
 
 @Entity()
 export class ExceptionEntity {
   @PrimaryGeneratedColumn()
-  id: number;
+  id?: number;
 
   @Column({
     nullable: false
@@ -27,10 +28,12 @@ export class ExceptionEntity {
     enum: States,
     default: States.PENDING
   })
-  state: States;
+  state?: States;
 
-  @Column({
-    nullable: false
-  })
-  documentTypeIds: number[];
+  @OneToMany(
+    () => DocumentTypeEntity,
+    (documentType) => documentType.exception,
+    { nullable: false }
+  )
+  documentTypeIds: DocumentTypeEntity[];
 }
