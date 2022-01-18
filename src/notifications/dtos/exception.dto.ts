@@ -1,5 +1,4 @@
 import { States } from '../enum/States.enum';
-import { DocumentTypeDTO } from './document-type.dto';
 
 export class ExceptionDTO {
   id?: number;
@@ -7,5 +6,4 @@ export class ExceptionDTO {
   vehicleId: number;
   securityId: number;
   state?: States;
-  documentTypeIds: DocumentTypeDTO[];
 }

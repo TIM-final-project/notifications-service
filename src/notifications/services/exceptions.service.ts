@@ -20,8 +20,7 @@ export class ExceptionsService {
   async findAll(exceptionQPs: ExceptionQPs): Promise<ExceptionDTO[]> {
     this.logger.debug('Getting Exception', { exceptionQPs });
     const query = {
-      where: { ...exceptionQPs },
-      relations: ['documentTypeIds']
+      where: { ...exceptionQPs }
     };
     this.logger.debug('Query', { query });
     return this.exceptionsRepository.find(query);
