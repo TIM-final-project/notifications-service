@@ -1,4 +1,4 @@
-import { States } from '../enum/States.enum';
+import { States } from 'src/notifications/enum/States.enum';
 
 export class ExceptionDTO {
   id?: number;

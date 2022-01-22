@@ -58,4 +58,5 @@ jobs:
             # Remove old image to save disk space
             docker rmi $(echo $IMAGE_NAME):old
             # Run a new container from a new image
-            cd /home/${{secrets.SSH_USERNAME}}/orchestation && docker-compose up -d --no-deps $(echo $SERVICE_NAME)
+            cd /var/opt/orchestation && docker-compose up -d --no-deps $(echo $SERVICE_NAME)
+
