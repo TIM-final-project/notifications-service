@@ -22,6 +22,21 @@ export class ExceptionEntity {
   securityId: number;
 
   @Column({
+    nullable: true
+  })
+  driver?: string;
+
+  @Column({
+    nullable: true
+  })
+  vehicle?: string;
+
+  @Column({
+    nullable: true
+  })
+  contractor?: string;
+
+  @Column({
     type: 'enum',
     nullable: false,
     enum: States,
