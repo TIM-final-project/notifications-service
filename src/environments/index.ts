@@ -30,6 +30,17 @@ const typeorm_conf = {
   }
 };
 
+const NODEMAILER = {
+  host: process.env.EMAIL_HOST,
+  port: process.env.EMAIL_PORT,
+  secure: false, // true for 465, false for other ports
+  account: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS
+  },
+  email_address: process.env.EMAIL_ADDRESS
+};
+
 const TYPEORM = typeorm_conf[NODE_ENV];
 
-export { NODE_ENV, PORT, TYPEORM };
+export { NODE_ENV, PORT, TYPEORM, NODEMAILER };
