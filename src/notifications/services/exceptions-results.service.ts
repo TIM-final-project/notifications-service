@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { ExceptionResultCreateDTO } from '../dtos/exception-result/create.dto';
 import ExceptionResultDTO from '../dtos/exception-result/response.dto';
 import { ExceptionResultEntity } from '../entities/exception-result.entity';
+import { ExceptionEntity } from '../entities/exception.entity';
 import { States } from '../enum/States.enum';
 import { ResultQPs } from '../qps/result.qps';
 
@@ -14,23 +15,36 @@ export class ExceptionsResultService {
 
   constructor(
     @InjectRepository(ExceptionResultEntity)
-    private exceptionsResultRepository: Repository<ExceptionResultEntity>
+    private exceptionsResultRepository: Repository<ExceptionResultEntity>,
+    @InjectRepository(ExceptionEntity)
+    private exceptionsRepository: Repository<ExceptionEntity>
   ) {}
 
   async findAll(exceptionQPs: ResultQPs): Promise<ExceptionResultDTO[]> {
     this.logger.debug('Getting Exception', { exceptionQPs });
     const query = {
-      where: { ...exceptionQPs }
+      where: { ...exceptionQPs },
+      relations: ['exception']
     };
     this.logger.debug('Query', { query });
     return this.exceptionsResultRepository.find(query);
   }
 
-  async create(
-    exceptionDTO: ExceptionResultCreateDTO
-  ): Promise<ExceptionResultDTO> {
+  async create({
+    managerId,
+    exceptionId,
+    comment,
+    result
+  }: ExceptionResultCreateDTO): Promise<ExceptionResultDTO> {
     try {
-      const exceptionEntity: ExceptionResultEntity = exceptionDTO;
+      const exception: ExceptionEntity =
+        await this.exceptionsRepository.findOne(exceptionId);
+      const exceptionEntity: ExceptionResultEntity = {
+        managerId,
+        comment,
+        result,
+        exception
+      };
       this.logger.debug('Exception Entity ', exceptionEntity);
       return this.exceptionsResultRepository.save(exceptionEntity);
     } catch (error) {

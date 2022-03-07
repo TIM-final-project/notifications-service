@@ -1,16 +1,22 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn
+} from 'typeorm';
 import { Result } from '../enum/Result.enum';
 import { States } from '../enum/States.enum';
+import { ExceptionEntity } from './exception.entity';
 
 @Entity()
 export class ExceptionResultEntity {
   @PrimaryGeneratedColumn()
   id?: number;
 
-  @Column({
-    nullable: false
-  })
-  exceptionId: number;
+  @OneToOne(() => ExceptionEntity)
+  @JoinColumn()
+  exception: ExceptionEntity;
 
   @Column({
     nullable: false
