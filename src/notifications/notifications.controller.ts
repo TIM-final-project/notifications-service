@@ -1,5 +1,6 @@
 import { Controller, Logger } from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
+import { sendExceptionEmail } from 'src/email';
 import { ExceptionResultCreateDTO } from './dtos/exception-result/create.dto';
 import ExceptionResultDTO from './dtos/exception-result/response.dto';
 import { ExceptionCreateDTO } from './dtos/exception/exception-create.dto';
@@ -24,11 +25,14 @@ export class NotificationsController {
   }
 
   @MessagePattern('notifications_create_exception')
-  async createException(
-    exceptionDTO: ExceptionCreateDTO
-  ): Promise<ExceptionDTO> {
+  async createException(body: any): Promise<ExceptionDTO> {
+    const { exceptionDTO, recipients } = body;
     this.logger.debug('Creating Exception', exceptionDTO);
-    return this.exceptionsService.create(exceptionDTO);
+    const exception = await this.exceptionsService.create(exceptionDTO);
+    this.logger.debug('Sending email to: ', recipients);
+    // Send Mail
+    sendExceptionEmail(recipients);
+    return exception;
   }
 
   @MessagePattern('notifications_update_exception')
@@ -42,11 +46,16 @@ export class NotificationsController {
   }
 
   @MessagePattern('notifications_create_exception_result')
-  async createExceptionResult(
-    exceptionDTO: ExceptionResultCreateDTO
-  ): Promise<ExceptionResultDTO> {
+  async createExceptionResult(body: any): Promise<ExceptionResultDTO> {
+    const { exceptionDTO, recipients } = body;
     this.logger.debug('Creating Exception Result', exceptionDTO);
-    return this.exceptionsResultService.create(exceptionDTO);
+    const exceptionResult = await this.exceptionsResultService.create(
+      exceptionDTO
+    );
+    this.logger.debug('Sending emails to:', recipients);
+    // Send Mail
+    sendExceptionEmail(recipients);
+    return exceptionResult;
   }
 
   @MessagePattern('notifications_update_exception_result')
