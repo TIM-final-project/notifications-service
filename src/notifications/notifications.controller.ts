@@ -1,6 +1,6 @@
 import { Controller, Logger } from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
-import { sendExceptionEmail } from 'src/email';
+import { sendExceptionEmail, sendExceptionResultEmail } from 'src/email';
 import { ExceptionResultCreateDTO } from './dtos/exception-result/create.dto';
 import ExceptionResultDTO from './dtos/exception-result/response.dto';
 import { ExceptionCreateDTO } from './dtos/exception/exception-create.dto';
@@ -31,7 +31,11 @@ export class NotificationsController {
     const exception = await this.exceptionsService.create(exceptionDTO);
     this.logger.debug('Sending email to: ', recipients);
     // Send Mail
-    sendExceptionEmail(recipients);
+    sendExceptionEmail(recipients, {
+      vehicle: exceptionDTO.vehicle,
+      driver: exceptionDTO.driver,
+      contractor: exceptionDTO.contractor
+    });
     return exception;
   }
 
@@ -54,7 +58,11 @@ export class NotificationsController {
     );
     this.logger.debug('Sending emails to:', recipients);
     // Send Mail
-    sendExceptionEmail(recipients);
+    sendExceptionResultEmail(recipients, {
+      vehicle: exceptionDTO.vehicle,
+      driver: exceptionDTO.driver,
+      contractor: exceptionDTO.contractor
+    });
     return exceptionResult;
   }
 

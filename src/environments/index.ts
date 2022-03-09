@@ -43,7 +43,7 @@ const nodemailer_conf = {
     },
     email_address: process.env.EMAIL_ADDRESS
   },
-  dev: {
+  test: {
     transport: {
       host: 'smtp.ethereal.email',
       port: 587,
@@ -58,7 +58,7 @@ const nodemailer_conf = {
   }
 };
 
-const NODEMAILER = nodemailer_conf['production'];
+const NODEMAILER = nodemailer_conf[NODE_ENV === 'test' ? 'test' : 'production'];
 
 const TYPEORM = typeorm_conf[NODE_ENV];
 
