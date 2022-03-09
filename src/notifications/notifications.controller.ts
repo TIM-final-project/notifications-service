@@ -51,18 +51,20 @@ export class NotificationsController {
 
   @MessagePattern('notifications_create_exception_result')
   async createExceptionResult(body: any): Promise<ExceptionResultDTO> {
-    const { exceptionDTO, recipients } = body;
-    this.logger.debug('Creating Exception Result', exceptionDTO);
-    const exceptionResult = await this.exceptionsResultService.create(
-      exceptionDTO
+    const { exceptionResultDTO, recipients } = body;
+    this.logger.debug('Creating Exception Result', body);
+    const exception = await this.exceptionsService.update(
+      exceptionResultDTO.exceptionId
     );
+    this.logger.debug('Exception updated: ', { exception });
+    const exceptionResult = await this.exceptionsResultService.create(
+      exceptionResultDTO
+    );
+    this.logger.debug('Exception Result created: ', { exceptionResult });
+
     this.logger.debug('Sending emails to:', recipients);
     // Send Mail
-    sendExceptionResultEmail(recipients, {
-      vehicle: exceptionDTO.vehicle,
-      driver: exceptionDTO.driver,
-      contractor: exceptionDTO.contractor
-    });
+    sendExceptionResultEmail(recipients, exceptionResultDTO);
     return exceptionResult;
   }
 

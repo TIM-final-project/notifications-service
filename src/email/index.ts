@@ -2,6 +2,7 @@ import * as nodemailer from 'nodemailer';
 import { NODEMAILER } from 'src/environments';
 import { Logger } from '@nestjs/common';
 import { ExceptionData } from 'src/notifications/dtos/exception/exception-data';
+import { ExceptionResultCreateDTO } from 'src/notifications/dtos/exception-result/create.dto';
 // Generate test SMTP service account from ethereal.email
 
 // create reusable transporter object using the default SMTP transport
@@ -20,9 +21,15 @@ function getExeptionEmailBody({ driver, vehicle, contractor }: ExceptionData) {
   `;
 }
 
-function getExeptionResultEmailBody({ driver, vehicle, contractor }: ExceptionData) {
+function getExeptionResultEmailBody({
+  exceptionId,
+  comment,
+  result
+}: ExceptionResultCreateDTO) {
   return `
-    Han visto el pedido de excepcion solicitado para el Conductor: ${driver} - Vehiculo: ${vehicle} - Contratista: ${contractor}
+    Han visto el pedido de excepcion ${exceptionId} - Resultado: ${
+    result ? 'APROBADO' : 'RECHAZADO'
+  } - Comentarios: ${comment}.
     Por favor ingrese a la aplicacion para finalizar con el proceso.
   `;
 }
@@ -48,14 +55,14 @@ export async function sendExceptionEmail(
 
 export async function sendExceptionResultEmail(
   recipients: string[],
-  exceptionData: ExceptionData
+  exceptionData: ExceptionResultCreateDTO
 ) {
   logger.debug({ recipients, exceptionData });
   try {
     const info = await transporter.sendMail({
       from: NODEMAILER.email_address,
       to: recipients,
-      subject: 'RESOLUCION EXCEPCION',
+      subject: 'RESOLUCION DE EXCEPCION',
       text: getExeptionResultEmailBody(exceptionData),
       html: `<p>${getExeptionResultEmailBody(exceptionData)}</p>`
     });
