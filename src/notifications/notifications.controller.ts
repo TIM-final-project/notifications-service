@@ -1,5 +1,6 @@
 import { Controller, Logger } from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
+import { sendExceptionEmail, sendExceptionResultEmail } from 'src/email';
 import { ExceptionResultCreateDTO } from './dtos/exception-result/create.dto';
 import ExceptionResultDTO from './dtos/exception-result/response.dto';
 import { ExceptionCreateDTO } from './dtos/exception/exception-create.dto';
@@ -24,11 +25,18 @@ export class NotificationsController {
   }
 
   @MessagePattern('notifications_create_exception')
-  async createException(
-    exceptionDTO: ExceptionCreateDTO
-  ): Promise<ExceptionDTO> {
+  async createException(body: any): Promise<ExceptionDTO> {
+    const { exceptionDTO, recipients } = body;
     this.logger.debug('Creating Exception', exceptionDTO);
-    return this.exceptionsService.create(exceptionDTO);
+    const exception = await this.exceptionsService.create(exceptionDTO);
+    this.logger.debug('Sending email to: ', recipients);
+    // Send Mail
+    sendExceptionEmail(recipients, {
+      vehicle: exceptionDTO.vehicle,
+      driver: exceptionDTO.driver,
+      contractor: exceptionDTO.contractor
+    });
+    return exception;
   }
 
   @MessagePattern('notifications_update_exception')
@@ -42,11 +50,22 @@ export class NotificationsController {
   }
 
   @MessagePattern('notifications_create_exception_result')
-  async createExceptionResult(
-    exceptionDTO: ExceptionResultCreateDTO
-  ): Promise<ExceptionResultDTO> {
-    this.logger.debug('Creating Exception Result', exceptionDTO);
-    return this.exceptionsResultService.create(exceptionDTO);
+  async createExceptionResult(body: any): Promise<ExceptionResultDTO> {
+    const { exceptionResultDTO, recipients } = body;
+    this.logger.debug('Creating Exception Result', body);
+    const exception = await this.exceptionsService.update(
+      exceptionResultDTO.exceptionId
+    );
+    this.logger.debug('Exception updated: ', { exception });
+    const exceptionResult = await this.exceptionsResultService.create(
+      exceptionResultDTO
+    );
+    this.logger.debug('Exception Result created: ', { exceptionResult });
+
+    this.logger.debug('Sending emails to:', recipients);
+    // Send Mail
+    sendExceptionResultEmail(recipients, exceptionResultDTO);
+    return exceptionResult;
   }
 
   @MessagePattern('notifications_update_exception_result')

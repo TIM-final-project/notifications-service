@@ -30,6 +30,36 @@ const typeorm_conf = {
   }
 };
 
+const nodemailer_conf = {
+  production: {
+    transport: {
+      host: process.env.EMAIL_HOST,
+      port: process.env.EMAIL_PORT,
+      secure: true, // true for 465, false for other ports
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+      }
+    },
+    email_address: process.env.EMAIL_ADDRESS
+  },
+  test: {
+    transport: {
+      host: 'smtp.ethereal.email',
+      port: 587,
+      secure: false,
+      requireTLS: true,
+      auth: {
+        user: 'daryl.pollich93@ethereal.email',
+        pass: 'F1tfC2HxbFTuwm1RFk'
+      }
+    },
+    email_address: 'daryl.pollich93@ethereal.email'
+  }
+};
+
+const NODEMAILER = nodemailer_conf[NODE_ENV === 'test' ? 'test' : 'production'];
+
 const TYPEORM = typeorm_conf[NODE_ENV];
 
-export { NODE_ENV, PORT, TYPEORM };
+export { NODE_ENV, PORT, TYPEORM, NODEMAILER };
