@@ -27,6 +27,19 @@ export class ExceptionsService {
   }
 
   async create(exceptionDTO: ExceptionCreateDTO): Promise<ExceptionDTO> {
+    const exceptions = await this.exceptionsRepository.find({
+      driverId: exceptionDTO.driverId,
+      vehicleId: exceptionDTO.vehicleId,
+      state: States.PENDING
+    });
+    this.logger.debug('exceptions: ', exceptions);
+    if (exceptions) {
+      throw new RpcException({
+        message:
+          'Ya se solicito una excepcion para este conductor y vehiculo. Por favor espere a que esta sea resuelta.'
+      });
+    }
+
     try {
       const exceptionEntity: ExceptionEntity = exceptionDTO;
       this.logger.debug('Exception Entity ', exceptionEntity);

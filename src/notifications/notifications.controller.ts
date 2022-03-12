@@ -1,5 +1,5 @@
 import { Controller, Logger } from '@nestjs/common';
-import { MessagePattern } from '@nestjs/microservices';
+import { MessagePattern, RpcException } from '@nestjs/microservices';
 import { sendExceptionEmail, sendExceptionResultEmail } from 'src/email';
 import { ExceptionResultCreateDTO } from './dtos/exception-result/create.dto';
 import ExceptionResultDTO from './dtos/exception-result/response.dto';
@@ -51,21 +51,27 @@ export class NotificationsController {
 
   @MessagePattern('notifications_create_exception_result')
   async createExceptionResult(body: any): Promise<ExceptionResultDTO> {
-    const { exceptionResultDTO, recipients } = body;
-    this.logger.debug('Creating Exception Result', body);
-    const exception = await this.exceptionsService.update(
-      exceptionResultDTO.exceptionId
-    );
-    this.logger.debug('Exception updated: ', { exception });
-    const exceptionResult = await this.exceptionsResultService.create(
-      exceptionResultDTO
-    );
-    this.logger.debug('Exception Result created: ', { exceptionResult });
+    try {
+      const { exceptionResultDTO, recipients } = body;
+      this.logger.debug('Creating Exception Result', body);
+      const exception = await this.exceptionsService.update(
+        exceptionResultDTO.exceptionId
+      );
+      this.logger.debug('Exception updated: ', { exception });
+      const exceptionResult = await this.exceptionsResultService.create(
+        exceptionResultDTO
+      );
+      this.logger.debug('Exception Result created: ', { exceptionResult });
 
-    this.logger.debug('Sending emails to:', recipients);
-    // Send Mail
-    sendExceptionResultEmail(recipients, exceptionResultDTO);
-    return exceptionResult;
+      this.logger.debug('Sending emails to:', recipients);
+      // Send Mail
+      sendExceptionResultEmail(recipients, exceptionResultDTO);
+      return exceptionResult;
+    } catch (error) {
+      throw new RpcException({
+        message: 'Ha ocurrido un error al Actualizar la excepcion.'
+      });
+    }
   }
 
   @MessagePattern('notifications_update_exception_result')
