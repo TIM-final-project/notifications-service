@@ -1,4 +1,7 @@
 export enum States {
   PENDING,
-  HANDLED
+  HANDLED,
+  WAITING_EXCEPTION,
+  REJECTED,
+  ACCEPTED
 }
