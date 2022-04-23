@@ -1,4 +1,4 @@
-import { States } from 'src/notifications/enum/States.enum';
+import { ExceptionCreateDTO } from '../exception/exception-create.dto';
 
 export class ArrivalCreateDTO {
   driverId: number;
@@ -7,7 +7,5 @@ export class ArrivalCreateDTO {
   driver?: string;
   vehicle?: string;
   contractor?: string;
-  state: States;
-  exception: boolean;
-  arrivalTime: Date;
+  exception: ExceptionCreateDTO;
 }

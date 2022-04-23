@@ -1,5 +1,13 @@
-import { Column, Entity, PrimaryGeneratedColumn, Timestamp } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn
+} from 'typeorm';
+import { Result } from '../enum/Result.enum';
 import { States } from '../enum/States.enum';
+import { ExceptionEntity } from './exception.entity';
 
 @Entity()
 export class ArrivalEntity {
@@ -24,6 +32,11 @@ export class ArrivalEntity {
   @Column({
     nullable: true
   })
+  expeditorId?: number;
+
+  @Column({
+    nullable: true
+  })
   driver?: string;
 
   @Column({
@@ -39,17 +52,23 @@ export class ArrivalEntity {
   @Column({
     type: 'enum',
     nullable: false,
-    enum: States
+    enum: States,
+    default: States.PENDING
   })
-  state: States;
+  state?: States;
 
   @Column({
-    type: 'boolean'
-  })
-  exception: boolean;
-
-  @Column({
+    type: 'enum',
     nullable: true,
+    enum: Result
+  })
+  result?: Result;
+
+  @OneToOne(() => ExceptionEntity, (exception) => exception.arrival)
+  exception: ExceptionEntity;
+
+  @Column({
+    nullable: false,
     type: 'timestamp'
   })
   arrivalTime: Date;

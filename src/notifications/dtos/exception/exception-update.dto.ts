@@ -1,8 +1,7 @@
 import { Result } from 'src/notifications/enum/Result.enum';
 
-export class ExceptionResultData {
-  managerId: number;
-  exceptionId: number;
+export class ExceptionUpdateDTO {
   comment: string;
+  managerId: number;
   result: Result;
 }
