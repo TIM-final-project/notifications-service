@@ -69,11 +69,23 @@ export class ArrivalsService {
   }
 
   async update(id: number, resultDTO: ArrivalResultDTO): Promise<ArrivalDTO> {
-    const Arrival: ArrivalEntity = await this.arrivalsRepository.findOne(id);
-    this.logger.debug('Arrival before update', { Arrival });
-    this.arrivalsRepository.merge(Arrival, resultDTO);
-    this.logger.debug('Arrival updated', { Arrival });
-    // Arrival.state = States.HANDLED; Deberia ser actualizado por el endpoint de Ingreso
-    return this.arrivalsRepository.save(Arrival);
+    const arrival: ArrivalEntity = await this.arrivalsRepository.findOne(id, {
+      relations: ['exception']
+    });
+    if (!arrival.exception.result && !resultDTO.state) {
+      throw new RpcException({
+        message:
+          'El anuncio no puede ser procesado porque posee una excepcion pendiente de evaluacion.'
+      });
+    }
+    this.logger.debug('Arrival before update', { arrival });
+    if (resultDTO.result) {
+      this.logger.debug('Creating Exception');
+      arrival.exception.state = States.HANDLED;
+      await this.exceptionsRepository.save(arrival.exception);
+    }
+    this.arrivalsRepository.merge(arrival, resultDTO);
+    this.logger.debug('Arrival updated', { arrival });
+    return this.arrivalsRepository.save(arrival);
   }
 }

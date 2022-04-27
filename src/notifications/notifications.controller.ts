@@ -141,12 +141,14 @@ export class NotificationsController {
       id,
       resultDTO
     );
-    sendArrivalResultEmail(recipients, {
-      driver: arrival.driver,
-      vehicle: arrival.vehicle,
-      contractor: arrival.contractor,
-      result: resultDTO.result
-    });
+    if (resultDTO.result) {
+      sendArrivalResultEmail(recipients, {
+        driver: arrival.driver,
+        vehicle: arrival.vehicle,
+        contractor: arrival.contractor,
+        result: resultDTO.result
+      });
+    }
     return arrival;
   }
 }
