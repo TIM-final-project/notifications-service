@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { RpcException } from '@nestjs/microservices';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { IsNull, Repository } from 'typeorm';
 import { ExceptionCreateDTO } from '../dtos/exception/exception-create.dto';
 import { ExceptionUpdateDTO } from '../dtos/exception/exception-update.dto';
 import { ExceptionDTO } from '../dtos/exception/exception.dto';
@@ -20,10 +20,16 @@ export class ExceptionsService {
 
   async findAll(exceptionQPs: ExceptionQPs): Promise<ExceptionDTO[]> {
     this.logger.debug('Getting Exception', { exceptionQPs });
+
     const query = {
       where: { ...exceptionQPs },
       relations: ['arrival']
     };
+
+    if (exceptionQPs.result === 'null') {
+      delete exceptionQPs.result;
+      query.where.result = IsNull();
+    }
     this.logger.debug('Query', { query });
     return this.exceptionsRepository.find(query);
   }
@@ -63,7 +69,7 @@ export class ExceptionsService {
     );
     this.logger.debug('Exception', { exception });
     this.exceptionsRepository.merge(exception, updateExceptionDTO);
-    exception.state = States.HANDLED;
+    // exception.state = States.HANDLED;
     return this.exceptionsRepository.save(exception);
   }
 }
