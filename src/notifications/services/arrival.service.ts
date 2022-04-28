@@ -72,14 +72,14 @@ export class ArrivalsService {
     const arrival: ArrivalEntity = await this.arrivalsRepository.findOne(id, {
       relations: ['exception']
     });
-    if (!arrival.exception.result && !resultDTO.state) {
+    if (!!arrival.exception && !arrival.exception?.result && !resultDTO.state) {
       throw new RpcException({
         message:
           'El anuncio no puede ser procesado porque posee una excepcion pendiente de evaluacion.'
       });
     }
     this.logger.debug('Arrival before update', { arrival });
-    if (resultDTO.result) {
+    if (!!arrival.exception && !!resultDTO.result) {
       this.logger.debug('Creating Exception');
       arrival.exception.state = States.HANDLED;
       await this.exceptionsRepository.save(arrival.exception);
