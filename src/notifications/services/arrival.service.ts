@@ -74,7 +74,7 @@ export class ArrivalsService {
     });
     // Si no llego el state, es decir que tiene expeditorId y result
     this.logger.debug('Arrival before update', { arrival });
-    if (!resultDTO.state && !!arrival.exception && !arrival.exception.result) {
+    if (!resultDTO.state && !!arrival.exception && !!arrival.exception.result) {
       throw new RpcException({
         message:
           'El anuncio no puede ser procesado porque posee una excepcion pendiente de evaluacion.'
