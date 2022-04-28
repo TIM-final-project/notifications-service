@@ -80,10 +80,11 @@ export class ArrivalsService {
           'El anuncio no puede ser procesado porque posee una excepcion pendiente de evaluacion.'
       });
     }
-    if (!!arrival.exception && !!resultDTO.result) {
-      this.logger.debug('Creating Exception');
+    if (!!arrival.exception) {
+      this.logger.debug('Updating Exception');
       arrival.exception.state = States.HANDLED;
       await this.exceptionsRepository.save(arrival.exception);
+      this.logger.debug('Exception updated', { exception: arrival.exception });
     }
     this.arrivalsRepository.merge(arrival, resultDTO);
     this.logger.debug('Arrival updated', { arrival });
