@@ -5,5 +5,7 @@ export class ArrivalQPs {
   vehicleId?: number;
   securityId?: number;
   state?: States;
-  arrivaltime?: Date;
+  arrivalTime?: Date;
+  before?: Date;
+  after?: Date;
 }

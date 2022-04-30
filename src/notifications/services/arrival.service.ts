@@ -1,10 +1,17 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { RpcException } from '@nestjs/microservices';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import {
+  Between,
+  FindConditions,
+  LessThanOrEqual,
+  MoreThanOrEqual,
+  Repository
+} from 'typeorm';
 import { ArrivalCreateDTO } from '../dtos/arrival/arrival-create.dto';
 import { ArrivalResultDTO } from '../dtos/arrival/arrival-update.dto';
 import { ArrivalDTO } from '../dtos/arrival/arrival.dto';
+import { ArrivalWhere } from '../dtos/arrival/arrival.where';
 import { ArrivalEntity } from '../entities/arrival.entity';
 import { ExceptionEntity } from '../entities/exception.entity';
 import { Result } from '../enum/Result.enum';
@@ -22,10 +29,44 @@ export class ArrivalsService {
     private exceptionsRepository: Repository<ExceptionEntity>
   ) {}
 
-  async findAll(arrivalQPs: ArrivalQPs): Promise<ArrivalDTO[]> {
-    this.logger.debug('Getting Arrival', { arrivalQPs });
+  async findAll({
+    driverId,
+    vehicleId,
+    securityId,
+    state,
+    arrivalTime,
+    before,
+    after
+  }: ArrivalQPs): Promise<ArrivalDTO[]> {
+    this.logger.debug('Getting Arrival', {
+      driverId,
+      vehicleId,
+      securityId,
+      state,
+      arrivalTime,
+      before,
+      after
+    });
+    const where: ArrivalWhere = {};
+
+    if (!!driverId) where.driverId = driverId;
+    if (!!vehicleId) where.vehicleId = vehicleId;
+    if (!!securityId) where.securityId = securityId;
+    if (!!state) where.state = state;
+
+    if (!!before && !!after) {
+      where.arrivalTime = Between(after, before);
+    } else if (!!before) {
+      where.arrivalTime = LessThanOrEqual(before);
+    } else if (!!after) {
+      where.arrivalTime = MoreThanOrEqual(after);
+    } else if (!!arrivalTime) {
+      where.arrivalTime = arrivalTime;
+    }
+
+    this.logger.debug('Where', { where });
     const query = {
-      where: { ...arrivalQPs },
+      where: { ...where },
       relations: ['exception']
     };
     this.logger.debug('Query', { query });
