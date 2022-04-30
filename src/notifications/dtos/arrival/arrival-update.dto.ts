@@ -5,4 +5,6 @@ export class ArrivalResultDTO {
   expeditorId?: number;
   result?: Result;
   state?: States;
+  palletsSalida?: number;
+  destiny?: string;
 }

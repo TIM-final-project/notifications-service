@@ -7,5 +7,6 @@ export class ArrivalCreateDTO {
   driver?: string;
   vehicle?: string;
   contractor?: string;
-  exception: ExceptionCreateDTO;
+  exception?: ExceptionCreateDTO;
+  palletsEntrada?: number;
 }

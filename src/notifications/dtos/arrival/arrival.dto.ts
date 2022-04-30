@@ -13,6 +13,9 @@ export class ArrivalDTO {
   contractor?: string;
   state?: States;
   result?: Result;
-  exception: ExceptionDTO;
+  exception?: ExceptionDTO;
   arrivalTime: Date;
+  palletsEntrada?: number;
+  palletsSalida?: number;
+  destiny?: string;
 }

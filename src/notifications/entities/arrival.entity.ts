@@ -65,11 +65,26 @@ export class ArrivalEntity {
   result?: Result;
 
   @OneToOne(() => ExceptionEntity, (exception) => exception.arrival)
-  exception: ExceptionEntity;
+  exception?: ExceptionEntity;
 
   @Column({
     nullable: false,
     type: 'timestamp'
   })
   arrivalTime: Date;
+
+  @Column({
+    nullable: true
+  })
+  palletsEntrada?: number;
+
+  @Column({
+    nullable: true
+  })
+  palletsSalida?: number;
+
+  @Column({
+    nullable: true
+  })
+  destiny?: string;
 }
