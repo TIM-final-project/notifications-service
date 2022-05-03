@@ -84,7 +84,7 @@ export async function sendArrivalEmail(
     const info = await transporter.sendMail({
       from: NODEMAILER.email_address,
       to: recipients,
-      subject: 'PEDIDO DE EXCEPCION',
+      subject: 'ANUNCIO DE ARRIBO',
       text: getArrivalEmailBody(arrivalData),
       html: `<p>${getArrivalEmailBody(arrivalData)}</p>`
     });
@@ -103,7 +103,7 @@ export async function sendExceptionResultEmail(
     const info = await transporter.sendMail({
       from: NODEMAILER.email_address,
       to: recipients,
-      subject: 'RESOLUCION DE ARRIBO DE CONDUCTOR',
+      subject: 'RESULTADO DE EXCEPCION',
       text: getExeptionResultEmailBody(exceptionData),
       html: `<p>${getExeptionResultEmailBody(exceptionData)}</p>`
     });
