@@ -117,7 +117,7 @@ export class NotificationsController {
     const arrival = await this.arrivalsService.create(arrivalDTO);
     this.logger.debug('Sending email to: ', recipients);
 
-    if (!recipients?.managersEmails?.length) {
+    if (recipients?.managersEmails?.length) {
       sendExceptionEmail(recipients.managersEmails, {
         vehicle: arrivalDTO.vehicle,
         driver: arrivalDTO.driver,

@@ -38,7 +38,7 @@ function getExeptionResultEmailBody({
 }: ExceptionResultData) {
   return `
     Han visto el pedido de excepcion ${exceptionId} - Resultado: ${
-    result === Result.ACCEPTED ? 'APROBADO' : 'RECHAZADO'
+    result == Result.ACCEPTED ? 'APROBADO' : 'RECHAZADO'
   } - Comentarios: ${comment}.
     Por favor ingrese a la aplicacion para finalizar con el proceso.
   `;
@@ -52,7 +52,7 @@ function getArrivalResultBody({
 }: ArrivalEmailData): string {
   return ` 
     El anuncio del conductor: ${driver} en el vehiculo: ${vehicle} por el contratista: ${contractor}
-    ha sido ${result === Result.ACCEPTED ? 'APROBADO' : 'RECHAZADO'}
+    ha sido ${result == Result.ACCEPTED ? 'APROBADO' : 'RECHAZADO'}
     Por favor ingrese a la aplicacion para finalizar con el proceso.
   `;
 }
