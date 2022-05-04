@@ -117,16 +117,17 @@ export class NotificationsController {
     const arrival = await this.arrivalsService.create(arrivalDTO);
     this.logger.debug('Sending email to: ', recipients);
 
+    const vehicle = JSON.parse(arrivalDTO.vehicle);
+    const driver = JSON.parse(arrivalDTO.driver);
+
     if (recipients?.managersEmails?.length) {
       sendExceptionEmail(recipients.managersEmails, {
-        vehicle: arrivalDTO.vehicle,
-        driver: arrivalDTO.driver,
+        vehicle: vehicle.plate,
+        driver: driver.name,
         contractor: arrivalDTO.contractor
       });
     }
     // Send Mail
-    const vehicle = JSON.parse(arrivalDTO.vehicle);
-    const driver = JSON.parse(arrivalDTO.driver);
     sendArrivalEmail(recipients.expeditorsEmails, {
       vehicle: vehicle.plate,
       driver: driver.name,
