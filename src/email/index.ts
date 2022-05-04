@@ -40,7 +40,6 @@ function getExeptionResultEmailBody({
     Han visto el pedido de excepcion ${exceptionId} - Resultado: ${
     result == Result.ACCEPTED ? 'APROBADO' : 'RECHAZADO'
   } - Comentarios: ${comment}.
-    Por favor ingrese a la aplicacion para finalizar con el proceso.
   `;
 }
 
