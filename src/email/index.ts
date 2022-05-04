@@ -5,6 +5,7 @@ import { ExceptionData } from 'src/notifications/dtos/exception/exception-data';
 import { ExceptionResultData } from 'src/notifications/dtos/exception-result/create.dto';
 import { ArrivalData } from 'src/notifications/dtos/arrival/arrival-data';
 import { ArrivalEmailData } from 'src/notifications/dtos/arrival/arrival-email.data';
+import { Result } from 'src/notifications/enum/Result.enum';
 // Generate test SMTP service account from ethereal.email
 
 // create reusable transporter object using the default SMTP transport
@@ -37,7 +38,7 @@ function getExeptionResultEmailBody({
 }: ExceptionResultData) {
   return `
     Han visto el pedido de excepcion ${exceptionId} - Resultado: ${
-    result ? 'APROBADO' : 'RECHAZADO'
+    result === Result.ACCEPTED ? 'APROBADO' : 'RECHAZADO'
   } - Comentarios: ${comment}.
     Por favor ingrese a la aplicacion para finalizar con el proceso.
   `;
@@ -51,7 +52,7 @@ function getArrivalResultBody({
 }: ArrivalEmailData): string {
   return ` 
     El anuncio del conductor: ${driver} en el vehiculo: ${vehicle} por el contratista: ${contractor}
-    ha sido ${result ? 'APROBADO' : 'RECHAZADO'}
+    ha sido ${result === Result.ACCEPTED ? 'APROBADO' : 'RECHAZADO'}
     Por favor ingrese a la aplicacion para finalizar con el proceso.
   `;
 }
