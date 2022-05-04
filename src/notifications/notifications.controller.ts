@@ -125,9 +125,11 @@ export class NotificationsController {
       });
     }
     // Send Mail
+    const vehicle = JSON.parse(arrivalDTO.vehicle);
+    const driver = JSON.parse(arrivalDTO.driver);
     sendArrivalEmail(recipients.expeditorsEmails, {
-      vehicle: arrivalDTO.vehicle,
-      driver: arrivalDTO.driver,
+      vehicle: vehicle.plate,
+      driver: driver.name,
       contractor: arrivalDTO.contractor
     });
     return arrival;
@@ -142,9 +144,11 @@ export class NotificationsController {
       resultDTO
     );
     if (resultDTO.result) {
+      const vehicle = JSON.parse(arrival.vehicle);
+      const driver = JSON.parse(arrival.driver);
       sendArrivalResultEmail(recipients, {
-        driver: arrival.driver,
-        vehicle: arrival.vehicle,
+        driver: driver.name,
+        vehicle: vehicle.plate,
         contractor: arrival.contractor,
         result: resultDTO.result
       });
