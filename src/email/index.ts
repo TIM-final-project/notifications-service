@@ -1,5 +1,5 @@
 import * as nodemailer from 'nodemailer';
-import { URL, NODEMAILER } from 'src/environments';
+import { URL, NODEMAILER } from '../environments';
 import { Logger } from '@nestjs/common';
 import { ExceptionData } from 'src/notifications/dtos/exception/exception-data';
 import { ExceptionResultData } from 'src/notifications/dtos/exception-result/create.dto';

@@ -2,11 +2,8 @@ import { Controller, Logger } from '@nestjs/common';
 import { EventPattern, MessagePattern } from '@nestjs/microservices';
 import {
   findAndReeplaceTemplate,
-  sendArrivalEmail,
-  sendArrivalResultEmail,
-  sendExceptionEmail,
   sendGenericEmail
-} from 'src/email';
+} from '../email';
 import { ArrivalDTO } from './dtos/arrival/arrival.dto';
 import { ExceptionDTO } from './dtos/exception/exception.dto';
 import { GenericEmailDto } from './dtos/genericEmail.dto';
@@ -89,9 +86,9 @@ export class NotificationsController {
         contractor: arrivalDTO.contractor
       });
   
-      const info = await sendGenericEmail(exceptionTemplate, 'Nuevo pedido de Excepción', recipients.managersEmails);
+      await sendGenericEmail(exceptionTemplate, 'Nuevo pedido de Excepción', recipients.managersEmails);
   
-      this.logger.debug('Exception creation email sent', info);
+      this.logger.debug('Exception creation email sent');
 
     }
     // Send Mail
