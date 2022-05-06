@@ -2,6 +2,9 @@ import * as dotenv from 'dotenv';
 
 dotenv.config();
 
+//server URL
+const URL: string = process.env.URL;
+
 // environment
 const NODE_ENV: string = process.env.NODE_ENV || 'dev';
 
@@ -62,4 +65,4 @@ const NODEMAILER = nodemailer_conf[NODE_ENV === 'test' ? 'test' : 'production'];
 
 const TYPEORM = typeorm_conf[NODE_ENV];
 
-export { NODE_ENV, PORT, TYPEORM, NODEMAILER };
+export {URL, NODE_ENV, PORT, TYPEORM, NODEMAILER };

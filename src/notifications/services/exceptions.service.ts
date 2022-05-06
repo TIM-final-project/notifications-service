@@ -65,7 +65,8 @@ export class ExceptionsService {
     updateExceptionDTO: ExceptionUpdateDTO
   ): Promise<ExceptionDTO> {
     const exception: ExceptionEntity = await this.exceptionsRepository.findOne(
-      id
+      id,
+      {relations: ['arrival']}
     );
     this.logger.debug('Exception', { exception });
     this.exceptionsRepository.merge(exception, updateExceptionDTO);

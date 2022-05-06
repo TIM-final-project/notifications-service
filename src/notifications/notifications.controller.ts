@@ -1,20 +1,20 @@
 import { Controller, Logger } from '@nestjs/common';
-import { MessagePattern } from '@nestjs/microservices';
+import { EventPattern, MessagePattern } from '@nestjs/microservices';
 import {
+  findAndReeplaceTemplate,
   sendArrivalEmail,
   sendArrivalResultEmail,
   sendExceptionEmail,
-  sendExceptionResultEmail
+  sendGenericEmail
 } from 'src/email';
 import { ArrivalDTO } from './dtos/arrival/arrival.dto';
-import { ExceptionUpdateDTO } from './dtos/exception/exception-update.dto';
 import { ExceptionDTO } from './dtos/exception/exception.dto';
-import { Result } from './enum/Result.enum';
+import { GenericEmailDto } from './dtos/genericEmail.dto';
+import { ResultTranslate } from './enum/Result.enum';
 import { ArrivalQPs } from './qps/arrival.qps';
 import { ExceptionQPs } from './qps/exception.qps';
 import { ArrivalsService } from './services/arrival.service';
 import { ExceptionsService } from './services/exceptions.service';
-
 @Controller('notifications')
 export class NotificationsController {
   private logger = new Logger(NotificationsController.name);
@@ -23,26 +23,12 @@ export class NotificationsController {
     private exceptionsService: ExceptionsService,
     private arrivalsService: ArrivalsService
   ) {}
-
+  
+  // Exceptions
   @MessagePattern('notifications_find_all_exceptions')
   async findAll(exceptionQPs: ExceptionQPs): Promise<ExceptionDTO[]> {
     return this.exceptionsService.findAll(exceptionQPs);
   }
-
-  // @MessagePattern('notifications_create_exception')
-  // async createException(body: any): Promise<ExceptionDTO> {
-  //   const { exceptionDTO, recipients } = body;
-  //   this.logger.debug('Creating Exception', exceptionDTO);
-  //   const exception = await this.exceptionsService.create(exceptionDTO);
-  //   this.logger.debug('Sending email to: ', recipients);
-  //   // Send Mail
-  //   sendExceptionEmail(recipients, {
-  //     vehicle: exceptionDTO.vehicle,
-  //     driver: exceptionDTO.driver,
-  //     contractor: exceptionDTO.contractor
-  //   });
-  //   return exception;
-  // }
 
   @MessagePattern('notifications_update_exception')
   async updateException({
@@ -60,49 +46,25 @@ export class NotificationsController {
       updateExceptionDTO
     );
 
-    sendExceptionResultEmail(recipients, {
+    const vehicle = JSON.parse(exception.arrival.vehicle);
+    const driver = JSON.parse(exception.arrival.driver);
+
+
+    const template = await findAndReeplaceTemplate('exceptionResult', {
+      vehicle: vehicle.plate,
+      driver: driver.name,
+      contractor: exception.arrival.contractor,
       exceptionId: exception.id,
       comment: exception.comment,
-      result: exception.result,
-      managerId: exception.managerId
+      result: ResultTranslate[exception.result],
     });
+
+    const info = await sendGenericEmail(template, 'Resolucion de Excepción', recipients);
+
+    this.logger.debug('Exception result email sent', info);
+
     return exception;
   }
-
-  // @MessagePattern('notifications_find_all_exception_results')
-  // async findAllResult(exceptionQPs: ResultQPs): Promise<ExceptionResultDTO[]> {
-  //   return this.exceptionsResultService.findAll(exceptionQPs);
-  // }
-
-  // @MessagePattern('notifications_create_exception_result')
-  // async createExceptionResult(body: any): Promise<ExceptionResultDTO> {
-  //   try {
-  //     const { exceptionResultDTO, recipients } = body;
-  //     this.logger.debug('Creating Exception Result', body);
-  //     const exception = await this.exceptionsService.update(
-  //       exceptionResultDTO.exceptionId
-  //     );
-  //     this.logger.debug('Exception updated: ', { exception });
-  //     const exceptionResult = await this.exceptionsResultService.create(
-  //       exceptionResultDTO
-  //     );
-  //     this.logger.debug('Exception Result created: ', { exceptionResult });
-
-  //     this.logger.debug('Sending emails to:', recipients);
-  //     Send Mail
-  //     sendExceptionResultEmail(recipients, exceptionResultDTO);
-  //     return exceptionResult;
-  //   } catch (error) {
-  //     throw new RpcException({
-  //       message: 'Ha ocurrido un error al Actualizar la excepcion.'
-  //     });
-  //   }
-  // }
-
-  // @MessagePattern('notifications_update_exception_result')
-  // async updateExceptionResult(id: number): Promise<ExceptionResultDTO> {
-  //   return this.exceptionsResultService.update(id);
-  // }
 
   // Arrivals
   @MessagePattern('arrivals_find_all')
@@ -121,18 +83,28 @@ export class NotificationsController {
     const driver = JSON.parse(arrivalDTO.driver);
 
     if (recipients?.managersEmails?.length) {
-      sendExceptionEmail(recipients.managersEmails, {
+      const exceptionTemplate = await findAndReeplaceTemplate('exceptionCreate', {
         vehicle: vehicle.plate,
         driver: driver.name,
         contractor: arrivalDTO.contractor
       });
+  
+      const info = await sendGenericEmail(exceptionTemplate, 'Nuevo pedido de Excepción', recipients.managersEmails);
+  
+      this.logger.debug('Exception creation email sent', info);
+
     }
     // Send Mail
-    sendArrivalEmail(recipients.expeditorsEmails, {
+    const arrivalTemplate = await findAndReeplaceTemplate('arrivalCreate', {
       vehicle: vehicle.plate,
       driver: driver.name,
       contractor: arrivalDTO.contractor
     });
+
+    const info = await sendGenericEmail(arrivalTemplate, 'Nuevo anuncio de Arribo', recipients.expeditorsEmails);
+
+    this.logger.debug('Arrival creation email sent', info);
+
     return arrival;
   }
 
@@ -147,13 +119,31 @@ export class NotificationsController {
     if (resultDTO.result) {
       const vehicle = JSON.parse(arrival.vehicle);
       const driver = JSON.parse(arrival.driver);
-      sendArrivalResultEmail(recipients, {
+
+      const template = await findAndReeplaceTemplate('arrivalUpdate', {
         driver: driver.name,
         vehicle: vehicle.plate,
         contractor: arrival.contractor,
-        result: resultDTO.result
+        result: ResultTranslate[resultDTO.result]
       });
+  
+      const info = await sendGenericEmail(template, 'Resolucion de Arribo de transportista', recipients);
+  
+      this.logger.debug('Arrival update email sent', info);
+
     }
     return arrival;
   }
+
+  // Notification
+  @EventPattern('generic_email')
+  async genericEmail(dto: GenericEmailDto){
+    this.logger.debug(dto);
+    const template = await findAndReeplaceTemplate(dto.template, dto.payload);
+
+    const info = await sendGenericEmail(template, dto.subject ,dto.recipients);
+
+    this.logger.debug("Generic email sent", info);
+  }
+
 }

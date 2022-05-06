@@ -1,11 +1,12 @@
 import * as nodemailer from 'nodemailer';
-import { NODEMAILER } from 'src/environments';
+import { URL, NODEMAILER } from 'src/environments';
 import { Logger } from '@nestjs/common';
 import { ExceptionData } from 'src/notifications/dtos/exception/exception-data';
 import { ExceptionResultData } from 'src/notifications/dtos/exception-result/create.dto';
 import { ArrivalData } from 'src/notifications/dtos/arrival/arrival-data';
 import { ArrivalEmailData } from 'src/notifications/dtos/arrival/arrival-email.data';
 import { Result } from 'src/notifications/enum/Result.enum';
+const { readFile } = require('fs').promises
 // Generate test SMTP service account from ethereal.email
 
 // create reusable transporter object using the default SMTP transport
@@ -94,25 +95,6 @@ export async function sendArrivalEmail(
   }
 }
 
-export async function sendExceptionResultEmail(
-  recipients: string[],
-  exceptionData: ExceptionResultData
-) {
-  logger.debug({ recipients, exceptionData });
-  try {
-    const info = await transporter.sendMail({
-      from: NODEMAILER.email_address,
-      to: recipients,
-      subject: 'RESULTADO DE EXCEPCION',
-      text: getExeptionResultEmailBody(exceptionData),
-      html: `<p>${getExeptionResultEmailBody(exceptionData)}</p>`
-    });
-    logger.debug('Email sent.', info);
-  } catch (error) {
-    logger.error('There was an error sending the email notification', error);
-  }
-}
-
 export async function sendArrivalResultEmail(
   recipients: string[],
   arrivalData: ArrivalEmailData
@@ -130,4 +112,43 @@ export async function sendArrivalResultEmail(
   } catch (error) {
     logger.error('There was an error sending the email notification', error);
   }
+}
+
+export async function sendGenericEmail(
+  template: string,
+  subject: string,
+  recipients: string[],
+){
+  try {
+    return await transporter.sendMail({
+      from: NODEMAILER.email_address,
+      to: recipients,
+      subject: subject,
+      text: "",
+      html: template
+    });
+  } catch (error) {
+    logger.error('There was an error sending the email notification', error);
+  }
+}
+
+export async function findAndReeplaceTemplate(
+  template: string,
+  payload: object
+){
+
+  logger.debug(`Finding template ${template}`);
+
+  let html_template = await readFile(`src/email/templates/${template}.html`,'utf8');
+
+  html_template = html_template.replace('{{url}}', URL);
+
+  const keys = Object.keys(payload);
+
+  keys.forEach(key => {
+    let regex = new RegExp(`{{${key}}}`,'g');
+    html_template = html_template.replace(regex,payload[key]);
+  });
+
+  return html_template;
 }
