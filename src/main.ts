@@ -4,6 +4,8 @@ import { AppModule } from './app.module';
 import { PORT } from './environments';
 import 'reflect-metadata';
 import { Logger } from '@nestjs/common';
+import { NewrelicInterceptor } from './newrelic.interceptor';
+import newrelic from 'newrelic';
 
 const logger = new Logger('Main');
 
@@ -18,6 +20,7 @@ async function bootstrap() {
       }
     }
   );
+  app.useGlobalInterceptors(new NewrelicInterceptor());
   logger.log('Microservice is listening to ' + PORT);
   await app.listen();
 }

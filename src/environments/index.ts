@@ -65,4 +65,8 @@ const NODEMAILER = nodemailer_conf[NODE_ENV === 'test' ? 'test' : 'production'];
 
 const TYPEORM = typeorm_conf[NODE_ENV];
 
-export {URL, NODE_ENV, PORT, TYPEORM, NODEMAILER };
+//New Relic
+const NEW_RELIC_LICENSE_KEY = process.env.NEW_RELIC_LICENSE_KEY;
+const NEW_RELIC_APP_NAME = process.env.NEW_RELIC_APP_NAME;
+
+export {URL, NODE_ENV, PORT, TYPEORM, NODEMAILER, NEW_RELIC_APP_NAME, NEW_RELIC_LICENSE_KEY };
