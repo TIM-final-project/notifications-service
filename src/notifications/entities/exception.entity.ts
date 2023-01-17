@@ -25,7 +25,7 @@ export class ExceptionEntity {
   @Column({
     nullable: true
   })
-  managerId?: number;
+  managerUuid?: string;
 
   @Column({
     nullable: true

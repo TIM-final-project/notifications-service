@@ -5,7 +5,7 @@ import { ArrivalDTO } from '../arrival/arrival.dto';
 export class ExceptionDTO {
   id?: number;
   comment?: string;
-  managerId?: number;
+  managerUuid?: string;
   state?: States;
   result?: Result;
   arrival?: ArrivalDTO;
