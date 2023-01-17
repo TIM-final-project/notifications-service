@@ -87,4 +87,9 @@ export class ArrivalEntity {
     nullable: true
   })
   destiny?: string;
+
+  @Column({
+    nullable: true
+  })
+  hasSupply?: boolean;
 }

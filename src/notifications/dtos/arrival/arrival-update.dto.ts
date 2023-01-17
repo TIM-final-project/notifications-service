@@ -7,4 +7,5 @@ export class ArrivalResultDTO {
   state?: States;
   palletsSalida?: number;
   destiny?: string;
+  hasSupply?: boolean;
 }

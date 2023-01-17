@@ -18,4 +18,5 @@ export class ArrivalDTO {
   palletsEntrada?: number;
   palletsSalida?: number;
   destiny?: string;
+  hasSupply?: boolean;
 }

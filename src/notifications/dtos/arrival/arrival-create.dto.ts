@@ -9,4 +9,5 @@ export class ArrivalCreateDTO {
   contractor?: string;
   exception?: ExceptionCreateDTO;
   palletsEntrada?: number;
+  hasSupply?: boolean;
 }
