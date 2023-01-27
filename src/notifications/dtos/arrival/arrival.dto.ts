@@ -6,7 +6,7 @@ export class ArrivalDTO {
   id?: number;
   driverId: number;
   vehicleId: number;
-  securityId: number;
+  userUUID: string;
   expeditorId?: number;
   driver?: string;
   vehicle?: string;

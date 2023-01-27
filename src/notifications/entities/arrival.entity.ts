@@ -30,6 +30,11 @@ export class ArrivalEntity {
   securityId: number;
 
   @Column({
+    nullable: false
+  })
+  userUUID: string;
+
+  @Column({
     nullable: true
   })
   expeditorId?: number;

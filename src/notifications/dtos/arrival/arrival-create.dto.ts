@@ -3,7 +3,7 @@ import { ExceptionCreateDTO } from '../exception/exception-create.dto';
 export class ArrivalCreateDTO {
   driverId: number;
   vehicleId: number;
-  securityId: number;
+  userUUID: string;
   driver?: string;
   vehicle?: string;
   contractor?: string;
