@@ -27,11 +27,6 @@ export class ArrivalEntity {
   @Column({
     nullable: false
   })
-  securityId: number;
-
-  @Column({
-    nullable: false
-  })
   userUUID: string;
 
   @Column({
