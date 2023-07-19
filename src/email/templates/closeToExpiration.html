@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+
+<head>
+    <title>Warning Notification</title>
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+
+        .link-button {
+            display: inline;
+            background-color: rgb(4, 170, 109);
+            color: white;
+            border-radius: 25px;
+            font-size: 18px;
+            font-family: 'Source Sans Pro', sans-serif;
+            padding: 10px;
+            text-decoration: none;
+            justify-content: space-around;
+            margin: 300px;
+        }
+
+        .code-box {
+            margin-bottom: 20px;
+            word-break: break-all;
+        }
+        
+        .severity {
+            text-align: center;
+            margin-bottom: 20px;
+            word-break: break-all;
+            border-radius: 25px;
+            padding: 5px;
+            color: white;
+            font-family: 'Source Sans Pro', sans-serif;
+            width: 100px;
+        }
+
+        .Alta {
+            background-color: red;
+
+        }
+
+        .Media {
+            background-color: yellow;
+        }
+
+        .Baja {
+            background-color: green;
+        }
+
+        U {
+            text-decoration: underline;
+            -webkit-text-decoration-color: #81B5A1;
+            text-decoration-color: #81B5A1;
+        }
+
+        @media only screen and (min-width: 1440px) {
+            .colorblock1 {
+                width: 11.5% !important;
+            }
+
+            .colorblock2 {
+                width: 50.1% !important;
+            }
+        }
+
+        @media only screen and (max-width: 768px) {
+            .colorblock1 {
+                width: 11.5% !important;
+            }
+        }
+
+        @media only screen and (max-width: 650px) {
+            .header {
+                width: 100% !important;
+            }
+
+            .headerwidth {
+                width: 100% !important;
+            }
+
+            .Top {
+                font-size: 15px !important;
+            }
+
+            td[class="L1"] {
+
+                font-size: 15px !important;
+
+            }
+
+            .colorblock2 {
+                width: 5% !important;
+            }
+
+            .banner_image {
+                width: 100% !important;
+            }
+
+            .sideblock {
+                width: 5% !important;
+            }
+
+            .content {
+                width: 100% !important;
+            }
+
+            .logo1 {
+                width: 100px !important;
+                height: auto !important;
+                margin-right: 0px !important;
+
+            }
+
+            .colorblock1 {
+                width: 11.5% !important;
+            }
+
+            .k4,
+            .k5 {
+                width: 100% !important;
+            }
+
+            .k6 {
+                width: 100% !important;
+            }
+
+            .k7 {
+                width: 100% !important;
+                padding-top: 20px !important;
+            }
+        }
+
+        @media only screen and (max-width: 650px) {
+            .colorblock1 {
+                display: none !important;
+            }
+
+            .s1,
+            .s2,
+            .s3,
+            .s4 {
+                padding-left: 10% !important;
+                text-align: left !important;
+            }
+
+            .Top {
+                font-size: 15px !important;
+
+                padding: 1.3% 0% !important;
+            }
+        }
+
+        @media only screen and (max-width: 480px) {
+
+            .Top {
+
+                padding: 0.7% 0% !important;
+            }
+
+            .t1 {
+                font-size: 16px !important;
+            }
+
+            .k4,
+            .k5 {
+                width: 100% !important;
+            }
+
+            .k6 {
+                width: 100% !important;
+            }
+
+            .k7 {
+                width: 100% !important;
+                padding-top: 20px !important;
+            }
+
+            .s5 {
+                padding: 0 20px !important;
+            }
+
+            .colorblock1 {
+                width: 10% !important;
+            }
+
+            .mobilewidth {
+                height: 46px !important;
+            }
+
+            .F1 {
+                width: 100% !important;
+            }
+
+            #outlookmargin {
+                font-size: 22px !important;
+                line-height: 28px !important;
+            }
+
+            .CTA {
+                padding-top: 8px !important;
+                padding-bottom: 16px !important;
+            }
+
+            .content {
+                padding-top: 20px !important;
+            }
+        }
+
+        @media only screen and (max-width: 320px) {
+
+            .Top {
+
+                padding: 0% 0% !important;
+            }
+
+            .colorblock2 {
+                width: 5% !important;
+            }
+
+            .colorblock1 {
+                width: 10% !important;
+            }
+
+            .t1 {
+                font-size: 16px !important
+            }
+
+            .logo1 {
+
+                font-size: 16px !important;
+
+            }
+
+            #cta {
+                font-size: 12px !important;
+            }
+
+            .mobilewidth {
+                height: 46px !important;
+            }
+
+            .CTA {
+                padding-top: 8px !important;
+                padding-bottom: 16px !important;
+            }
+
+            .content {
+                padding-bottom: 0px !important;
+                padding-top: 0px !important;
+            }
+
+            .content1 {
+                padding-bottom: 32px !important;
+                padding-top: 32px !important;
+            }
+        }
+    </style>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head>
+
+<body style="-webkit-text-size-adjust:none;margin:0px !important;padding:0px !important;" vlink="#003366" text="#000001"
+    link="#003366" bgcolor="" alink="#003366">
+
+    <!--Start Body Content-->
+    <table style="width: 100%; background-color: #A9A9A9;" width="100%" cellspacing="0" cellpadding="0" border="0"
+        bgcolor="#A9A9A9">
+        <tbody>
+            <tr>
+                <td style="width: 100%; background-color: #A9A9A9;" width="100%" bgcolor="#A9A9A9" align="center">
+
+                    <table style="width: 100%; background-color: #eee;/*! padding: 0px 63px; */" class="header"
+                        width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#eee">
+
+
+                        <!--Start Green Header Bar-->
+                        <tbody>
+                            <tr>
+                                <td style="width: 100%;">
+
+                                    <table style="width: 100%; background-color: #293e40;" class="headerwidth"
+                                        cellspacing="0" cellpadding="0" border="0" bgcolor="#293e40" align="center">
+                                        <tbody>
+                                            <tr>
+                                                <td style="width: 29.5%; margin: 0px !important; padding: 0px !important; vertical-align: top;"
+                                                    class="colorblock2" width="29.5%">
+
+
+
+                                                    <table class="mobilewidth"
+                                                        style="height: 54px;width: 100%; background-color: #293e40;"
+                                                        cellspacing="0" cellpadding="0" border="0" bgcolor="#293e40">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td style="position: relative;">
+                                                                    <img src="https://drive.google.com/uc?export=view&id=1J1gwzCh2Ra80l_zBLPgFESGuhGa3z4te" class="logo1" alt="LogoScart" title="LogoScart"
+                                                                    style="padding-right: 0px; font-size: 22px; display: block;"
+                                                                    width="150px" height="150" align="right">
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+
+                                                </td>
+                                                <td>
+                                                    <table class="header" style="width: 610px;" width="610"
+                                                        cellspacing="0" cellpadding="0" border="0" bgcolor=""
+                                                        align="center">
+
+                                                        <tbody>
+                                                            <tr>
+
+                                                                <td style="font-size: 22px;" class="Top" align="left">
+                                                                    <p class="t1"
+                                                                        style="color: #ffffff !important;  font-family: Century Gothic, CenturyGothic,Helvetica,sans-serif !important;">
+                                                                        <b>Nuevo anuncio de arribo</b></p>
+
+                                                                </td>
+                                                                <td style=" background-color: #293e40;" class="L1"
+                                                                    bgcolor="#293e40" align="right">
+                                                                    <img src="https://drive.google.com/uc?export=view&id=1cO4iDupzrCCgu5HHuMw-6zXOupfcAw4n" class="logo1" alt="LogoNutreco" title="LogoNutreco"
+                                                                        style="padding-right: 0px; font-size: 22px;"
+                                                                        width="200px" height="50" align="right">
+
+                                                                </td>
+
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+
+
+                                                <td style="width: 28.1%; margin: 0px !important; padding: 0px !important; vertical-align: top;"
+                                                    class="colorblock2" width="28.1%">
+
+
+                                                    <table class="mobilewidth"
+                                                        style="height: 54px;width: 100%; background-color: #293e40;"
+                                                        cellspacing="0" cellpadding="0" border="0" bgcolor="#293e40">
+                                                        <tbody>
+                                                            <tr>
+
+                                                                <td style="position: absolute;">
+
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                </td>
+                            </tr>
+
+                            <!--End Green Header Bar-->
+
+                            <!--Begin White Section-->
+                            <tr>
+                                <td>
+                                    <table
+                                        style="width:100%; background-color: #eee; margin-top: 0px !important; padding: 0px !important;"
+                                        width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#eee">
+                                        <tbody>
+                                            <tr>
+
+                                                <td style="width: 50%; margin: 0px !important; padding: 0px !important;"
+                                                    class="sideblock" width="27.8%" valign="top">
+                                                    <!--[if mso ]>
+                                    <table class="colorblock" style="height: 45px;width: 100%; background-color: #293e40;" border="0" bgcolor="#293e40">
+                                        <tbody><tr>
+                                            <td style="position: absolute; height: 45px;">
+                                            </td>
+                                        </tr>
+                                        </tbody></table>
+                                    <![endif]-->
+
+                                                    <!--[if !mso]><!-->
+                                                    <table class="colorblock"
+                                                        style="height: 84px;width: 100%; background-color: #293e40;"
+                                                        cellspacing="0" cellpadding="0" border="0" bgcolor="#293e40">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td style="position: absolute;">
+
+
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                    <!--<![endif]-->
+                                                </td>
+                                                <td style="margin:0px; padding: 0px;">
+
+
+                                                    <table class="content"
+                                                        style="width: 800px; background-color: #fff; margin-bottom: 0px; margin-top: 0px; padding-top: 16px; padding-bottom: 40px;"
+                                                        width="600px" cellspacing="0" cellpadding="0" border="0"
+                                                        align="center">
+
+                                                        <tbody>
+                                                            <tr>
+
+                                                                <td class="content1"
+                                                                    style="font-family: Century Gothic, CenturyGothic,Helvetica,sans-serif; font-size: 16px;line-height: 27.2px;color: #293e40; padding-left: 15px;padding-right: 8px;">
+                                                                    <h3 style="margin-top:0px;">El siguiente documento se acerca a su fecha de expiracion:</h3>
+
+                                                                    <strong>Documento</strong>
+                                                                    <div class="code-box">
+                                                                        <code>{{documentName}}</code>
+                                                                    </div>
+
+                                                                    <strong>{{entityTypeName}}</documentSeveritystrong>
+                                                                    <div class="code-box">
+                                                                        <code>{{entityDescription}}</code>
+                                                                    </div>
+
+                                                                    <a href="http://{{url}}/contratista/documentacion/{{documentId}}" class="link-button"> Ir a la aplicacion</a>
+
+
+                                                                    <p style="font-size: x-small;"> Este es un mensaje automatizado. Por favor no responda.</p>
+
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+
+
+                                                </td>
+                                                <td style="width: 50%; margin: 0px !important; padding: 0px !important;"
+                                                    class="sideblock" width="28.13%" valign="top">
+                                                    <!--[if mso ]>
+                                    <table class="colorblock" style="height: 45px;width: 100%; background-color: #293e40;" border="0" bgcolor="#293e40">
+                                        <tbody><tr>
+                                            <td style="position: absolute; height: 45px;">
+                                            </td>
+                                        </tr>
+                                        </tbody></table>
+                                    <![endif]-->
+
+                                                    <!--[if !mso]><!-->
+                                                    <table class="colorblock"
+                                                        style="height: 84px;width: 100%; background-color: #293e40;"
+                                                        cellspacing="0" cellpadding="0" border="0" bgcolor="#293e40">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td style="position: absolute;">
+
+
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                    <!--<![endif]-->
+
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table
+                        style="width:100%;height: 50px; background-color: #eee; margin-top: 0px !important; padding: 0px !important;"
+                        width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#eee">
+                        <tbody>
+                            <tr>
+                                <td height="50">
+
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+
+            <!--End White Section-->
+        </tbody>
+    </table>

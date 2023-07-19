@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 import * as nodemailer from 'nodemailer';
 import { URL, NODEMAILER } from '../environments';
 import { Logger } from '@nestjs/common';
@@ -6,7 +7,7 @@ import { ExceptionResultData } from 'src/notifications/dtos/exception-result/cre
 import { ArrivalData } from 'src/notifications/dtos/arrival/arrival-data';
 import { ArrivalEmailData } from 'src/notifications/dtos/arrival/arrival-email.data';
 import { Result } from 'src/notifications/enum/Result.enum';
-const { readFile } = require('fs').promises
+const { readFile } = require('fs').promises;
 // Generate test SMTP service account from ethereal.email
 
 // create reusable transporter object using the default SMTP transport
@@ -117,14 +118,14 @@ export async function sendArrivalResultEmail(
 export async function sendGenericEmail(
   template: string,
   subject: string,
-  recipients: string[],
-){
+  recipients: string[]
+) {
   try {
     return await transporter.sendMail({
       from: NODEMAILER.email_address,
       to: recipients,
       subject: subject,
-      text: "",
+      text: '',
       html: template
     });
   } catch (error) {
@@ -135,19 +136,21 @@ export async function sendGenericEmail(
 export async function findAndReeplaceTemplate(
   template: string,
   payload: object
-){
-
+) {
   logger.debug(`Finding template ${template}`);
 
-  let html_template = await readFile(`src/email/templates/${template}.html`,'utf8');
+  let html_template = await readFile(
+    `src/email/templates/${template}.html`,
+    'utf8'
+  );
 
   html_template = html_template.replace('{{url}}', URL);
 
   const keys = Object.keys(payload);
 
-  keys.forEach(key => {
-    let regex = new RegExp(`{{${key}}}`,'g');
-    html_template = html_template.replace(regex,payload[key]);
+  keys.forEach((key) => {
+    const regex = new RegExp(`{{${key}}}`, 'g');
+    html_template = html_template.replace(regex, payload[key]);
   });
 
   return html_template;

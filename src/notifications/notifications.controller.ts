@@ -1,9 +1,6 @@
 import { Controller, Logger } from '@nestjs/common';
 import { EventPattern, MessagePattern } from '@nestjs/microservices';
-import {
-  findAndReeplaceTemplate,
-  sendGenericEmail
-} from '../email';
+import { findAndReeplaceTemplate, sendGenericEmail } from '../email';
 import { ArrivalDTO } from './dtos/arrival/arrival.dto';
 import { ExceptionDTO } from './dtos/exception/exception.dto';
 import { GenericEmailDto } from './dtos/genericEmail.dto';
@@ -20,7 +17,7 @@ export class NotificationsController {
     private exceptionsService: ExceptionsService,
     private arrivalsService: ArrivalsService
   ) {}
-  
+
   // Exceptions
   @MessagePattern('notifications_find_all_exceptions')
   async findAll(exceptionQPs: ExceptionQPs): Promise<ExceptionDTO[]> {
@@ -46,17 +43,20 @@ export class NotificationsController {
     const vehicle = JSON.parse(exception.arrival.vehicle);
     const driver = JSON.parse(exception.arrival.driver);
 
-
     const template = await findAndReeplaceTemplate('exceptionResult', {
       vehicle: vehicle.plate,
       driver: driver.name,
       contractor: exception.arrival.contractor,
       exceptionId: exception.id,
       comment: exception.comment,
-      result: ResultTranslate[exception.result],
+      result: ResultTranslate[exception.result]
     });
 
-    const info = await sendGenericEmail(template, 'Resolucion de Excepción', recipients);
+    const info = await sendGenericEmail(
+      template,
+      'Resolucion de Excepción',
+      recipients
+    );
 
     this.logger.debug('Exception result email sent', info);
 
@@ -80,16 +80,22 @@ export class NotificationsController {
     const driver = JSON.parse(arrivalDTO.driver);
 
     if (recipients?.managersEmails?.length) {
-      const exceptionTemplate = await findAndReeplaceTemplate('exceptionCreate', {
-        vehicle: vehicle.plate,
-        driver: driver.name,
-        contractor: arrivalDTO.contractor
-      });
-  
-      await sendGenericEmail(exceptionTemplate, 'Nuevo pedido de Excepción', recipients.managersEmails);
-  
-      this.logger.debug('Exception creation email sent');
+      const exceptionTemplate = await findAndReeplaceTemplate(
+        'exceptionCreate',
+        {
+          vehicle: vehicle.plate,
+          driver: driver.name,
+          contractor: arrivalDTO.contractor
+        }
+      );
 
+      await sendGenericEmail(
+        exceptionTemplate,
+        'Nuevo pedido de Excepción',
+        recipients.managersEmails
+      );
+
+      this.logger.debug('Exception creation email sent');
     }
     // Send Mail
     const arrivalTemplate = await findAndReeplaceTemplate('arrivalCreate', {
@@ -98,7 +104,11 @@ export class NotificationsController {
       contractor: arrivalDTO.contractor
     });
 
-    const info = await sendGenericEmail(arrivalTemplate, 'Nuevo anuncio de Arribo', recipients.expeditorsEmails);
+    const info = await sendGenericEmail(
+      arrivalTemplate,
+      'Nuevo anuncio de Arribo',
+      recipients.expeditorsEmails
+    );
 
     this.logger.debug('Arrival creation email sent', info);
 
@@ -123,24 +133,26 @@ export class NotificationsController {
         contractor: arrival.contractor,
         result: ResultTranslate[resultDTO.result]
       });
-  
-      const info = await sendGenericEmail(template, 'Resolucion de Arribo de transportista', recipients);
-  
-      this.logger.debug('Arrival update email sent', info);
 
+      const info = await sendGenericEmail(
+        template,
+        'Resolucion de Arribo de transportista',
+        recipients
+      );
+
+      this.logger.debug('Arrival update email sent', info);
     }
     return arrival;
   }
 
   // Notification
   @EventPattern('generic_email')
-  async genericEmail(dto: GenericEmailDto){
+  async genericEmail(dto: GenericEmailDto) {
     this.logger.debug(dto);
     const template = await findAndReeplaceTemplate(dto.template, dto.payload);
 
-    const info = await sendGenericEmail(template, dto.subject ,dto.recipients);
+    const info = await sendGenericEmail(template, dto.subject, dto.recipients);
 
-    this.logger.debug("Generic email sent", info);
+    this.logger.debug('Generic email sent', info);
   }
-
 }
