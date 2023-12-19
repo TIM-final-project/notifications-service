@@ -1,40 +1,18 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn
+} from 'typeorm';
+import { Result } from '../enum/Result.enum';
 import { States } from '../enum/States.enum';
+import { ArrivalEntity } from './arrival.entity';
 
 @Entity()
 export class ExceptionEntity {
   @PrimaryGeneratedColumn()
   id?: number;
-
-  @Column({
-    nullable: false
-  })
-  driverId: number;
-
-  @Column({
-    nullable: false
-  })
-  vehicleId: number;
-
-  @Column({
-    nullable: false
-  })
-  securityId: number;
-
-  @Column({
-    nullable: true
-  })
-  driver?: string;
-
-  @Column({
-    nullable: true
-  })
-  vehicle?: string;
-
-  @Column({
-    nullable: true
-  })
-  contractor?: string;
 
   @Column({
     type: 'enum',
@@ -43,4 +21,25 @@ export class ExceptionEntity {
     default: States.PENDING
   })
   state?: States;
+
+  @Column({
+    nullable: true
+  })
+  managerUuid?: string;
+
+  @Column({
+    nullable: true
+  })
+  comment?: string;
+
+  @Column({
+    type: 'enum',
+    nullable: true,
+    enum: Result
+  })
+  result?: Result;
+
+  @OneToOne(() => ArrivalEntity, (arrival) => arrival.exception)
+  @JoinColumn()
+  arrival?: ArrivalEntity;
 }

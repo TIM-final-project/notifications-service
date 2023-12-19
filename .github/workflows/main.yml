@@ -30,33 +30,4 @@ jobs:
         with:
           push: true
           tags: tlunaaa/scart-notifications:latest
-          
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build_and_push
-
-    steps:
-      - name: Deploy to Digital Ocean droplet via SSH action
-        uses: appleboy/ssh-action@v0.1.3
-        with:
-          HOST: ${{ secrets.SSH_HOST }}
-          USERNAME: ${{ secrets.SSH_USERNAME }}
-          KEY: ${{ secrets.SSH_KEY }}
-          envs: IMAGE_NAME,CONTAINER_NAME,SERVICE_NAME
-          script: |
-            # Stop running container
-            docker stop $(echo $CONTAINER_NAME)
-            # Remove old container
-            docker rm $(echo $CONTAINER_NAME)
-            
-            # Change old image tag
-            docker tag $(echo $IMAGE_NAME):latest $(echo $IMAGE_NAME):old
-            
-            # Pull new image
-            docker pull $(echo $IMAGE_NAME):latest
-            
-            # Remove old image to save disk space
-            docker rmi $(echo $IMAGE_NAME):old
-            # Run a new container from a new image
-            cd /var/opt/orchestation && docker-compose up -d --no-deps $(echo $SERVICE_NAME)
 
