@@ -8,4 +8,5 @@ export class ExceptionResultData {
   exceptionId: number;
   comment: string;
   result: Result;
+  plant: number;
 }

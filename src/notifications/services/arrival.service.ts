@@ -84,7 +84,7 @@ export class ArrivalsService {
     try {
       const ArrivalEntity: ArrivalEntity = {
         ...arrivalDTO,
-        arrivalTime: new Date()
+        arrivalTime: new Date(),
       };
       if (!!arrivalDTO.exception) {
         this.logger.debug('Creating Exception');

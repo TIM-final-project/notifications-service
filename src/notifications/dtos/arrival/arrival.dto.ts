@@ -19,4 +19,5 @@ export class ArrivalDTO {
   palletsSalida?: number;
   destiny?: string;
   hasSupply?: boolean;
+  plant: number;
 }
