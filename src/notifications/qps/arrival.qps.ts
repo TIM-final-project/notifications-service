@@ -8,4 +8,5 @@ export class ArrivalQPs {
   arrivalTime?: Date;
   before?: Date;
   after?: Date;
+  plant?: number;
 }

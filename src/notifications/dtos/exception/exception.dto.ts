@@ -9,4 +9,5 @@ export class ExceptionDTO {
   state?: States;
   result?: Result;
   arrival?: ArrivalDTO;
+  plant?: number;
 }
