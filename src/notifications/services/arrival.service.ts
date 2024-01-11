@@ -30,7 +30,8 @@ export class ArrivalsService {
     state,
     arrivalTime,
     before,
-    after
+    after,
+    plant,
   }: ArrivalQPs): Promise<ArrivalDTO[]> {
     this.logger.debug('Getting Arrival', {
       driverId,
@@ -39,7 +40,8 @@ export class ArrivalsService {
       state,
       arrivalTime,
       before,
-      after
+      after,
+      plant,
     });
     const where: ArrivalWhere = {};
 
@@ -47,6 +49,7 @@ export class ArrivalsService {
     if (!!vehicleId) where.vehicleId = vehicleId;
     if (!!securityId) where.securityId = securityId;
     if (!!state) where.state = state;
+    if (!!plant) where.plant = plant;
 
     if (!!before && !!after) {
       where.arrivalTime = Between(after, before);

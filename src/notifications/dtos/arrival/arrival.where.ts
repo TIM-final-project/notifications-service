@@ -7,4 +7,5 @@ export class ArrivalWhere {
   securityId?: number;
   state?: States;
   arrivalTime?: Date | FindOperator<any>;
+  plant?: number;
 }
