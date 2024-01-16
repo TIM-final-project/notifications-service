@@ -8,4 +8,5 @@ export class ArrivalResultDTO {
   palletsSalida?: number;
   destiny?: string;
   hasSupply?: boolean;
+  plant: number;
 }

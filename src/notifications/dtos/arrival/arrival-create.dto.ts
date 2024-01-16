@@ -10,4 +10,5 @@ export class ArrivalCreateDTO {
   exception?: ExceptionCreateDTO;
   palletsEntrada?: number;
   hasSupply?: boolean;
+  plant: number;
 }

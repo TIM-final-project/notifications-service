@@ -92,4 +92,9 @@ export class ArrivalEntity {
     nullable: true
   })
   hasSupply?: boolean;
+
+  @Column({
+    nullable: false,
+  })
+  plant: number;
 }

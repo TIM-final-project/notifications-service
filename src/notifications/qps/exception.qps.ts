@@ -8,4 +8,5 @@ export class ExceptionQPs {
   securityId?: number;
   state?: States;
   result?: Result | 'null' | FindOperator<any>;
+  plant?: number;
 }

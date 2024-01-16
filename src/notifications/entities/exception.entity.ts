@@ -39,7 +39,14 @@ export class ExceptionEntity {
   })
   result?: Result;
 
+  @Column({
+    nullable: false,
+  })
+  plant: number;
+
   @OneToOne(() => ArrivalEntity, (arrival) => arrival.exception)
   @JoinColumn()
   arrival?: ArrivalEntity;
+
+
 }

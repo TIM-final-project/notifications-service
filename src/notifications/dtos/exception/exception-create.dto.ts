@@ -1,1 +1,3 @@
-export class ExceptionCreateDTO {}
+export class ExceptionCreateDTO {
+    plant: number;
+}
