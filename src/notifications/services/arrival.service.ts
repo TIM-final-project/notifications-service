@@ -91,6 +91,7 @@ export class ArrivalsService {
       };
       if (!!arrivalDTO.exception) {
         this.logger.debug('Creating Exception');
+        arrivalDTO.exception.plant = arrivalDTO.plant;
         const exception = await this.exceptionsRepository.save(
           arrivalDTO.exception
         );
