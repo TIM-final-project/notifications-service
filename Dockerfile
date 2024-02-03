@@ -12,5 +12,6 @@ FROM node:16-alpine as main
 
 COPY --from=build /usr/src/app/node_modules ./node_modules
 COPY --from=build /usr/src/app/dist ./dist
+COPY --from=build /usr/src/app/src/email ./src/email
 EXPOSE 3005
 CMD [ "node", "dist/main.js" ]
